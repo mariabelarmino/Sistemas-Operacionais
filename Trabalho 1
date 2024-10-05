@@ -1,1 +1,134 @@
+#include <stdio.h>
 
+#define TAM 10 //quantidade máxima de prioridades
+
+// definição do quantum dos processos
+void quantum(int *quantum)
+{
+    printf("\n\tdefina o quantum a ser usado: ");
+    scanf("%d", &*quantum);
+}
+
+// definição do tempo máximo de execução de um processo dentro de uma prioridade
+void tempo_max(int *tempo_max)
+{
+    printf("\n\tdefina o tempo máximo para troca de prioridade de um processo: ");
+    scanf("%d", &*tempo_max);
+}
+
+// implementação da fila ------------------------------------------------------------------------------------
+
+typedef struct no_
+{
+    int id;
+    int tempo_execucao;
+    int prioridade;
+    struct no_ *prox;
+} no;
+
+void inserir(no **fim, no **inicio, no *novo)
+{
+    if (*fim != NULL)
+    {
+        (*fim)->prox = novo;
+    }
+    else
+    {
+        (*inicio) = novo;
+        (*fim) = (*inicio); // primeiro e último elemento
+    }
+}
+
+no *remover(no **fim, no **inicio)
+{
+    no *tmp = NULL;
+    if (*inicio != NULL)
+    {
+        tmp = *inicio;
+        *inicio = (*(*inicio)).prox;
+        if (inicio == NULL)
+        {
+            fim = NULL;
+        }
+    }
+    return tmp;
+}
+
+no *alocar_no()
+{
+    no *novo_no = malloc(sizeof(no));
+    printf("id do processo: ");
+    scanf("%d", &(*novo_no).id);
+    printf("tempo de execução: ");
+    scanf("%d", &(*novo_no).tempo_execucao);
+    printf("nivel de prioridade(1 - menor): ");
+    scanf("%d", &(*novo_no).prioridade);
+    printf("\n");
+    novo_no->prox = NULL;
+    return novo_no;
+}
+
+// separação por prioridades --------------------------------------------------------------------------------
+void prioridades(no *vetor[TAM], no **inicio)
+{
+    vetor[inicio.prioridade] = *inicio;
+}
+
+// round-robin ----------------------------------------------------------------------------------------------
+void round_robin(no *vetor[TAM], int *quantum, no *tempo_max)
+{
+    int *ut;
+    for (int x = TAM; x >= 1; x--)
+    {
+        if (vetor[x] == NULL) // testa se a lista de prioridade x não está vazia
+        {
+            x--;
+        }
+        while (vetor[x]->prox != NULL) // faz enquanto a fila não acabar
+        {
+            // fazer todos da prioridade mais alta primeiro
+            vetor[x]->tempo_execucao = vetor[x]->tempo_execucao - *quantum;
+            if (vetor[x]->tempo_execucao <= 0) // o processo terminou a sua execução
+            {
+                printf("\tprocesso %d terminado em %d u.t.", vetor[x]->id, (vetor[x]->tempo_execucao + *quantum));
+                ut = ut + (vetor[x]->tempo_execucao + *quantum)
+                              vetor[x] = vetor[x]->prox;
+            }
+            else // acabou o tempo mas o processo não terminou a sua execução
+            {
+                vetor[x]->tempo_execucao = vetor[x]->tempo_execucao - 3;
+                printf("\n\tprocesso %d não executado totalmente, faltam %d ut", vetor[x]->id, vetor[x]->tempo_execucao);
+                ut = ut + 3;
+                no *fim->prox = vetor[x];
+                vetor[x] = vetor[x]->prox;
+                if (troca_prioridade(vetor[x], *tempo_max))
+                {
+                    vetor[x - 1] = vetor[x];
+                    vetor[x] = vetor[x]->prox;
+                } 
+
+            }
+            ptintf("\n\tut: %d", &ut);
+        }
+    }
+}
+
+// troca de prioridade por tempo máximo
+bool troca_prioridade(no *processo, int *tempo_max)
+{
+    if (processo->tempo_execucao > *tempo_max)
+    {
+        if (*ut >= tempo_max)
+        {
+            processo->prioridade--;
+            return true; // mudou a prioridade
+        }
+    }
+    return false;
+}
+
+void main()
+{
+
+    retun;
+}
